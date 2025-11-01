@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dlx:*)",
+      "Bash(dir /b:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm run dev:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

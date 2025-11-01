@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
+/* Color Palette from Design */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-yellow: #FDBD25;
+  --color-orange: #FF8426;
+  --color-light-gray: #E7F7F7;
+  --color-gray: #929292;
+  --color-black: #010101;
+  --color-white: #ffffff;
+
+  /* Gradient */
+  --gradient-warm: linear-gradient(135deg, var(--color-yellow) 0%, var(--color-orange) 100%);
+
+  /* Background colors */
+  --background: var(--color-light-gray);
+  --foreground: var(--color-black);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-ibm-plex-mono);
+  --font-heading: var(--font-bebas-neue);
+  --font-display: var(--font-anton);
+
+  /* Custom color tokens for Tailwind */
+  --color-primary: var(--color-orange);
+  --color-secondary: var(--color-yellow);
+  --color-accent: var(--color-orange);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Uncomment when you add the Overused Grotesk font file to public/fonts/ */
+/*
+@font-face {
+  font-family: "Overused Grotesk";
+  src: url("/fonts/OverusedGrotesk-VF.woff2") format("woff2-variations");
+  font-weight: 300 900;
+}
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bebas-neue), 'Bebas Neue', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-display {
+  font-family: var(--font-anton), 'Anton', sans-serif;
+}
+
+.font-grotesk {
+  font-family: 'Overused Grotesk', sans-serif;
+}
+
+/* Smooth scrolling for navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--color-orange);
+  color: var(--color-white);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-orange);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow);
 }
