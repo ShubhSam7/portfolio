@@ -2,160 +2,129 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Carousel } from '../ui/Carousel';
-import { StarBorder } from '../ui/StarBorder';
-import { SiGithub } from 'react-icons/si';
-import { FiExternalLink } from 'react-icons/fi';
 
 interface Project {
   title: string;
+  subtitle: string;
   description: string;
-  tags: string[];
-  githubUrl: string;
-  liveUrl: string;
   imageUrl?: string;
 }
 
 export const Projects = () => {
-  // TODO: Add your actual projects here
   const projects: Project[] = [
     {
-      title: 'Project One',
-      description: 'A full-stack web application built with Next.js and TypeScript. Features include real-time updates, authentication, and a modern UI.',
-      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
-      githubUrl: 'https://github.com/yourusername/project-one',
-      liveUrl: 'https://project-one.vercel.app',
-      imageUrl: '', // Add your project image here
+      title: 'SurrealDB Illustrations',
+      subtitle: 'Illustration | Creative direction',
+      description: 'A series of custom illustrations created for the SurrealDB blog. The work focused on aligning with the brand\'s color palette, maintaining accurate human proportions, and achieving a ...',
+      imageUrl: '',
     },
     {
-      title: 'Project Two',
-      description: 'An innovative e-commerce platform with advanced filtering, cart management, and payment integration.',
-      tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-      githubUrl: 'https://github.com/yourusername/project-two',
-      liveUrl: 'https://project-two.vercel.app',
-      imageUrl: '', // Add your project image here
+      title: 'Roar Lite',
+      subtitle: 'Character design',
+      description: 'Our goal was to create a mascot for 1771 Technologies.',
+      imageUrl: '',
     },
     {
-      title: 'Project Three',
-      description: 'A creative portfolio website with stunning animations and smooth transitions using Framer Motion.',
-      tags: ['Next.js', 'Framer Motion', 'Tailwind CSS'],
-      githubUrl: 'https://github.com/yourusername/project-three',
-      liveUrl: 'https://project-three.vercel.app',
-      imageUrl: '', // Add your project image here
+      title: 'Padmission Journey',
+      subtitle: 'Animation | Explainer video | Creative direction',
+      description: 'We created a presentation video for a company to showcase how their app works. Through close communication with the client and carefully listening to their vision, we realized they wanted ...',
+      imageUrl: '',
     },
   ];
 
-  const carouselItems = projects.map((project, index) => (
-    <div key={index} className="w-full px-4">
-      <div className="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl mx-auto border border-[var(--color-gray)]/5">
-        <div className="grid lg:grid-cols-2 gap-0">
-          {/* Project Image/Placeholder */}
-          <div className="relative h-80 lg:h-full bg-[var(--color-orange)] flex items-center justify-center">
-            {project.imageUrl ? (
-              <img
-                src={project.imageUrl}
-                alt={project.title}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="text-center p-8">
-                <div className="text-8xl mb-6 text-white/50">🎨</div>
-                <p className="text-white text-lg font-semibold">
-                  Add your project screenshot here
-                </p>
-                <p className="text-white/70 text-sm mt-2">
-                  1200x800px recommended
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Project Info */}
-          <div className="p-10 flex flex-col justify-between">
-            <div>
-              <h3 className="text-5xl font-bold text-[var(--color-black)] mb-6">
-                {project.title}
-              </h3>
-              <p className="text-[var(--color-gray)] mb-8 leading-relaxed text-lg">
-                {project.description}
-              </p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-3 mb-8">
-                {project.tags.map((tag, tagIndex) => (
-                  <span
-                    key={tagIndex}
-                    className="px-4 py-2 bg-[var(--color-light-gray)] text-[var(--color-black)] text-sm rounded-full font-medium border border-[var(--color-orange)]/20"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-4 flex-wrap">
-              <StarBorder href={project.githubUrl} className="flex-1 min-w-[160px] justify-center">
-                <SiGithub className="w-5 h-5" />
-                <span>GitHub</span>
-              </StarBorder>
-
-              <StarBorder href={project.liveUrl} className="flex-1 min-w-[160px] justify-center bg-[var(--color-yellow)] hover:bg-[var(--color-orange)]">
-                <FiExternalLink className="w-5 h-5" />
-                <span>Live Demo</span>
-              </StarBorder>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
   return (
-    <section id="projects" className="py-32 bg-gradient-to-b from-white to-[var(--color-light-gray)] relative overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section id="work" className="py-24 md:py-32 bg-[var(--color-light-bg)]">
+      <div className="container">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="mb-16"
         >
-          <h2 className="text-6xl md:text-8xl font-bold text-[var(--color-black)] mb-6">
-            Featured Projects
-          </h2>
-          <p className="text-lg md:text-xl text-[var(--color-gray)] max-w-2xl mx-auto">
-            Explore some of the projects I've built with passion and dedication
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">Featured work</h2>
+          <div className="flex items-start justify-between gap-8">
+            <div className="flex-1">
+              {/* Large featured project image placeholder */}
+              <div className="w-full aspect-video bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl mb-6">
+                <div className="w-full h-full flex items-center justify-center text-white">
+                  <div className="text-center">
+                    <div className="text-6xl mb-4">🎨</div>
+                    <p className="text-xl font-semibold">Featured Project Image</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl md:text-3xl font-bold">{projects[0].title}</h3>
+                <p className="text-[var(--color-gray)]">{projects[0].subtitle}</p>
+                <p className="text-[var(--color-black)] leading-relaxed">
+                  {projects[0].description}
+                </p>
+                <a
+                  href="#"
+                  className="inline-block text-[var(--color-yellow)] font-semibold hover:underline mt-2"
+                >
+                  see project
+                </a>
+              </div>
+            </div>
+
+            {/* Side illustration */}
+            <div className="hidden lg:block w-96">
+              <div className="w-full aspect-square bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎨</div>
+                  <p className="text-lg font-semibold text-[var(--color-gray)]">
+                    Illustration
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 text-right">
+            <p className="text-lg">
+              Explore more projects – get a closer look{' '}
+              <a href="#" className="text-[var(--color-yellow)] font-semibold underline">
+                at the range of work
+              </a>{' '}
+              we've done
+            </p>
+          </div>
         </motion.div>
 
+        {/* Grid of additional projects */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-7xl mx-auto mb-20"
+          className="grid md:grid-cols-2 gap-12 mt-24"
         >
-          <Carousel items={carouselItems} autoPlay={true} interval={6000} />
-        </motion.div>
-
-        {/* Additional Projects Link */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center"
-        >
-          <a
-            href="https://github.com/yourusername"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-[var(--color-black)] text-white font-semibold text-lg rounded-full hover:bg-[var(--color-orange)] transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
-          >
-            <SiGithub className="w-6 h-6" />
-            <span>View All Projects on GitHub</span>
-          </a>
+          {projects.slice(1).map((project, index) => (
+            <div key={index} className="space-y-4">
+              <div className="w-full aspect-video bg-gradient-to-br from-blue-200 to-green-200 rounded-2xl flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎨</div>
+                  <p className="text-xl font-semibold text-gray-700">Project Image</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold">{project.title}</h3>
+                <p className="text-[var(--color-gray)]">{project.subtitle}</p>
+                <p className="text-[var(--color-black)] leading-relaxed">
+                  {project.description}
+                </p>
+                <a
+                  href="#"
+                  className="inline-block text-[var(--color-yellow)] font-semibold hover:underline mt-2"
+                >
+                  see project
+                </a>
+              </div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

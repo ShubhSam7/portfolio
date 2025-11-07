@@ -1,128 +1,74 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ClickSpark } from '../ui/ClickSpark';
-import { RotatingText } from '../ui/RotatingText';
+import React from "react";
+import { motion } from "framer-motion";
 
 export const Hero = () => {
-  const roles = [
-    'Full Stack Developer',
-    'UI/UX Enthusiast',
-    'Creative Coder',
-    'Problem Solver',
-  ];
-
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[var(--color-light-gray)] to-white"
+      className="min-h-screen flex items-center relative overflow-hidden bg-[var(--color-light-bg)] pt-20"
     >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: Math.random() * 300 + 50,
-              height: Math.random() * 300 + 50,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i % 2 === 0
-                ? 'radial-gradient(circle, rgba(253,189,37,0.1) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(255,132,38,0.1) 0%, transparent 70%)',
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          {/* Left side - Text content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-6"
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
           >
-            <h1 className="text-7xl md:text-9xl font-bold mb-4 text-[var(--color-black)]">
-              Hi, I'm{' '}
-              <ClickSpark>
-                <span className="text-[var(--color-orange)]">
-                  Your Name
-                </span>
-              </ClickSpark>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+              Your <span className="text-[var(--color-yellow)]">story</span>{" "}
+              matters
+              <br />
+              We make sure it's seen
             </h1>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-2xl md:text-4xl mb-8 h-12 font-medium"
-          >
-            <span className="text-[var(--color-black)]">I'm a </span>
-            <RotatingText texts={roles} interval={2500} />
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-[var(--color-gray)] max-w-2xl mx-auto mb-12"
-          >
-            Creating beautiful, functional, and user-friendly digital experiences with modern
-            technologies. Let's build something amazing together.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <a
-              href="#projects"
-              className="px-8 py-4 bg-[var(--color-orange)] text-white font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              See My Work
-            </a>
-            <a
-              href="#contact"
-              className="px-8 py-4 border-2 border-[var(--color-orange)] text-[var(--color-orange)] font-semibold rounded-full hover:bg-[var(--color-orange)] hover:text-white transform hover:scale-105 transition-all duration-300"
-            >
-              Get In Touch
-            </a>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          >
             <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-6 h-10 border-2 border-[var(--color-orange)] rounded-full flex justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <motion.div
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-1.5 h-3 bg-[var(--color-orange)] rounded-full mt-2"
-              />
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-orange)] text-white text-lg font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] transition-all duration-300"
+              >
+                See our work
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 10H16M16 10L10 4M16 10L10 16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
             </motion.div>
+          </motion.div>
+
+          {/* Right side - Illustration placeholder */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="hidden lg:flex items-center justify-center"
+          >
+            <div className="w-full max-w-2xl aspect-square bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl flex items-center justify-center">
+              <div className="text-center space-y-4 p-12">
+                <div className="text-8xl">🎨</div>
+                <p className="text-2xl font-semibold text-[var(--color-gray)]">
+                  Illustration placeholder
+                </p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

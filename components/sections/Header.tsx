@@ -1,19 +1,44 @@
 'use client';
 
 import React from 'react';
-import { PillNav } from '../ui/PillNav';
+import Link from 'next/link';
 
 export const Header = () => {
-  const navItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Tech Stack', href: '#tech-stack' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <header>
-      <PillNav items={navItems} />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-[var(--color-light-gray)]">
+      <div className="container">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-[var(--color-orange)] rounded-full flex items-center justify-center text-white font-bold text-xl">
+              Y
+            </div>
+            <span className="text-xl font-bold text-[var(--color-black)]">YourName</span>
+          </Link>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <a
+              href="#work"
+              className="text-[var(--color-black)] font-medium hover:text-[var(--color-orange)] transition-colors duration-200"
+            >
+              Work
+            </a>
+            <a
+              href="#about"
+              className="text-[var(--color-black)] font-medium hover:text-[var(--color-orange)] transition-colors duration-200"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              className="text-[var(--color-black)] font-medium hover:text-[var(--color-orange)] transition-colors duration-200"
+            >
+              Contact
+            </a>
+          </nav>
+        </div>
+      </div>
     </header>
   );
 };
