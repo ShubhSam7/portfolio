@@ -1,19 +1,18 @@
 @import "tailwindcss";
 
-/* Color Palette from Design */
+/* Color Palette - NotBear.Co Inspired */
 :root {
-  --color-yellow: #FDBD25;
+  --color-yellow: #FDB913;
   --color-orange: #FF8426;
-  --color-light-gray: #E7F7F7;
-  --color-gray: #929292;
-  --color-black: #010101;
+  --color-light-bg: #F5F5F5;
+  --color-light-gray: #E8E8E8;
+  --color-gray: #777777;
+  --color-dark-gray: #4A4A4A;
+  --color-black: #000000;
   --color-white: #ffffff;
 
-  /* Gradient */
-  --gradient-warm: linear-gradient(135deg, var(--color-yellow) 0%, var(--color-orange) 100%);
-
   /* Background colors */
-  --background: var(--color-light-gray);
+  --background: var(--color-white);
   --foreground: var(--color-black);
 }
 
@@ -50,6 +49,30 @@ body {
   color: var(--foreground);
   font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Consistent container spacing */
+.container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

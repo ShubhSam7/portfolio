@@ -58,7 +58,7 @@ export const Hero = () => {
             <h1 className="text-7xl md:text-9xl font-bold mb-4 text-[var(--color-black)]">
               Hi, I'm{' '}
               <ClickSpark>
-                <span className="bg-gradient-to-r from-[var(--color-yellow)] to-[var(--color-orange)] bg-clip-text text-transparent">
+                <span className="text-[var(--color-orange)]">
                   Your Name
                 </span>
               </ClickSpark>
@@ -93,7 +93,7 @@ export const Hero = () => {
           >
             <a
               href="#projects"
-              className="px-8 py-4 bg-gradient-to-r from-[var(--color-yellow)] to-[var(--color-orange)] text-white font-semibold rounded-full hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="px-8 py-4 bg-[var(--color-orange)] text-white font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
               See My Work
             </a>
