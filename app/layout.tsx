@@ -25,7 +25,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${anton.variable} antialiased overflow-x-hidden`}
+        className={`${poppins.variable} antialiased overflow-x-hidden`}
       >
         {children}
       </body>

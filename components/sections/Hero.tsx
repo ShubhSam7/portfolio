@@ -7,18 +7,18 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center relative overflow-hidden bg-[var(--color-light-bg)] pt-20"
+      className="min-h-screen flex items-center relative overflow-hidden bg-[var(--color-light-bg)] pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-20 lg:pb-24"
     >
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left side - Text content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-8"
+            className="space-y-6 md:space-y-8"
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1]">
               Your <span className="text-[var(--color-yellow)]">story</span>{" "}
               matters
               <br />
@@ -32,7 +32,7 @@ export const Hero = () => {
             >
               <a
                 href="#projects"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-orange)] text-white text-lg font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] transition-all duration-300"
+                className="inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[var(--color-orange)] text-white text-sm md:text-base lg:text-lg font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] transition-all duration-300 whitespace-nowrap"
               >
                 See our work
                 <svg
@@ -41,6 +41,7 @@ export const Hero = () => {
                   viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                 >
                   <path
                     d="M4 10H16M16 10L10 4M16 10L10 16"
@@ -62,9 +63,9 @@ export const Hero = () => {
             className="hidden lg:flex items-center justify-center"
           >
             <div className="w-full max-w-2xl aspect-square bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl flex items-center justify-center">
-              <div className="text-center space-y-4 p-12">
-                <div className="text-8xl">🎨</div>
-                <p className="text-2xl font-semibold text-[var(--color-gray)]">
+              <div className="text-center space-y-4 p-8 md:p-12">
+                <div className="text-6xl md:text-7xl lg:text-8xl">🎨</div>
+                <p className="text-xl md:text-2xl font-semibold text-[var(--color-gray)]">
                   Illustration placeholder
                 </p>
               </div>
