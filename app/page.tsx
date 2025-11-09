@@ -11,9 +11,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="space-y-20 md:space-y-32 lg:space-y-40">
-        <Hero />
-        after hero
+      <main className="md:space-y-32 lg:space-y-40">
+        <Hero/>
         <About />
         after about
         <Projects />

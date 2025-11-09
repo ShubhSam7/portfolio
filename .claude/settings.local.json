@@ -5,7 +5,8 @@
       "Bash(dir /b:*)",
       "Bash(pnpm install:*)",
       "Bash(pnpm run dev:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export const About = () => {
   return (
-    <section id="about" className="py-16 md:py-24 lg:py-32 bg-white">
+    <section id="about" className="py-16 md:py-24 lg:py-32 bg-[var(--color-light-bg)]">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
