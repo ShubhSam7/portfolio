@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-
+import Image from "next/image";
 export const Hero = () => {
   return (
     <section
@@ -18,12 +18,12 @@ export const Hero = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6 md:space-y-8"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1]">
-              Your <span className="text-[var(--color-yellow)]">story</span>{" "}
-              matters
+            <h4 className="text-4xl sm:text-5xl md:text-3xl lg:text-3xl 3xl:text-3xl font-bold leading-[1.1]">
+              Hi, I am <span className="text-[var(--color-yellow)]">Shubh 👋</span>{" "}
+              I build clean, performant, and meaningful digital experiences.  
               <br />
-              We make sure it's seen
-            </h1>
+              From sleek websites to scalable software — I craft solutions that work beautifully.
+            </h4>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -34,11 +34,12 @@ export const Hero = () => {
                 href="#projects"
                 className="inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[var(--color-orange)] text-white text-sm md:text-base lg:text-lg font-semibold rounded-full hover:bg-[var(--color-yellow)] hover:text-[var(--color-black)] transition-all duration-300 whitespace-nowrap"
               >
+                <div></div>
                 See our work
                 <svg
                   width="20"
                   height="20"
-                  viewBox="0 0 20 20"
+                  viewBox="5 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="flex-shrink-0"
@@ -55,19 +56,24 @@ export const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right side - Illustration placeholder */}
+          {/* Right side - Hero Image */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="hidden lg:flex items-center justify-center"
           >
-            <div className="w-full max-w-2xl aspect-square bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl flex items-center justify-center">
-              <div className="text-center space-y-4 p-8 md:p-12">
-                <div className="text-6xl md:text-7xl lg:text-8xl">🎨</div>
-                <p className="text-xl md:text-2xl font-semibold text-[var(--color-gray)]">
-                  Illustration placeholder
-                </p>
+            <div className="relative w-full max-w-2xl aspect-square">
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl -z-10" />
+              <div className="relative w-full h-full flex items-center justify-center p-8">
+                <Image
+                  src="/hero-image.png"
+                  width={800}
+                  height={800}
+                  alt="Hero illustration"
+                  className="object-contain w-full h-full"
+                  priority
+                />
               </div>
             </div>
           </motion.div>
