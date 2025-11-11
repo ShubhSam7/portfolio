@@ -11,16 +11,12 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="md:space-y-32 lg:space-y-40">
-        <Hero/>
+      <main className="space-y-12 md:space-y-16 lg:space-y-20">
+        <Hero />
         <About />
-        after about
         <Projects />
-        after projects
         <Services />
         after services
-        <Clients />
-        after client
         <Contact />
         after contract
       </main>

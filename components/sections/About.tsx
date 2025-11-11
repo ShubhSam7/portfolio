@@ -34,17 +34,17 @@ export const About = () => {
 
       <section
         id="about"
-        className="py-12 md:py-8 lg:py-18 bg-[var(--color-light-bg)]"
+        className="py-12 md:py-16 lg:py-20 bg-[var(--color-light-bg)]"
       >
         <div className="container">
-          <div className="flex flex-col md:min-h-screen md:flex-row items-center gap-8 md:gap-12">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Left side - Lottie Animation */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="w-full md:w-1/2"
+              className="hidden md:block md:w-1/2 pl-16"
             >
               <dotlottie-player
                 src="/programing_animation.lottie"
@@ -62,7 +62,7 @@ export const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="w-full md:w-1/2"
+              className="w-full md:w-1/2 md:pr-8"
             >
               <div className="text-5xl font-thin">What I Do</div>
               <div className="text-gray-500 text-xl font-light mt-8">

@@ -1,43 +1,101 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Playfair_Display } from "next/font/google";
+import Image from "next/image";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
 
 interface Project {
   title: string;
-  subtitle: string;
   description: string;
-  imageUrl?: string;
+  image: string;
+  liveUrl: string;
+  githubUrl: string;
 }
 
+const projectsData: Project[] = [
+  {
+    title: "Project One",
+    description:
+      "A full-stack web application built with Next.js and TypeScript",
+    image: "/hero-image.png", // Replace with actual project screenshot
+    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/username/project-one",
+  },
+  {
+    title: "Project Two",
+    description:
+      "Modern e-commerce platform with real-time inventory management",
+    image: "/hero-image.png", // Replace with actual project screenshot
+    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/username/project-two",
+  },
+  {
+    title: "Project Three",
+    description: "Progressive web app for task management and collaboration",
+    image: "/hero-image.png", // Replace with actual project screenshot
+    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/username/project-three",
+  },
+];
+
 export const Projects = () => {
-  const projects: Project[] = [
-    {
-      title: "SurrealDB Illustrations",
-      subtitle: "Illustration | Creative direction",
-      description:
-        "A series of custom illustrations created for the SurrealDB blog. The work focused on aligning with the brand's color palette, maintaining accurate human proportions, and achieving a ...",
-      imageUrl: "",
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, isPaused]);
+
+  const handleNext = () => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % projectsData.length);
+  };
+
+  const handlePrev = () => {
+    setDirection(-1);
+    setCurrentIndex(
+      (prev) => (prev - 1 + projectsData.length) % projectsData.length
+    );
+  };
+
+  const handleDotClick = (index: number) => {
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
     },
-    {
-      title: "Roar Lite",
-      subtitle: "Character design",
-      description: "Our goal was to create a mascot for 1771 Technologies.",
-      imageUrl: "",
-    },
-    {
-      title: "Padmission Journey",
-      subtitle: "Animation | Explainer video | Creative direction",
-      description:
-        "We created a presentation video for a company to showcase how their app works. Through close communication with the client and carefully listening to their vision, we realized they wanted ...",
-      imageUrl: "",
-    },
-  ];
+    exit: (direction: number) => ({
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
 
   return (
     <section
-      id="work"
-      className="py-16 md:py-24 lg:py-32 bg-[var(--color-light-bg)]"
+      id="projects"
+      className="min-h-screen md:py-8 lg:py-10 bg-white flex items-center"
     >
       <div className="container">
         {/* Section Header */}
@@ -46,112 +104,147 @@ export const Projects = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-12 md:mb-16 lg:mb-20"
+          className="text-center mb-8 md:mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-8">
-            Featured work
+          <h2 className={`text-5xl font-thin ${playfair.className}`}>
+            My Projects
           </h2>
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12">
-            <div className="flex-1 w-full">
-              {/* Large featured project image placeholder */}
-              <div className="w-full aspect-video bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl mb-4 md:mb-6">
-                <div className="w-full h-full flex items-center justify-center text-white">
-                  <div className="text-center p-4">
-                    <div className="text-4xl md:text-5xl lg:text-6xl mb-4">
-                      🎨
-                    </div>
-                    <p className="text-lg md:text-xl font-semibold">
-                      Featured Project Image
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-2 md:space-y-3">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
-                  {projects[0].title}
-                </h3>
-                <p className="text-sm md:text-base text-[var(--color-gray)]">
-                  {projects[0].subtitle}
-                </p>
-                <p className="text-sm md:text-base text-[var(--color-black)] leading-relaxed">
-                  {projects[0].description}
-                </p>
-                <a
-                  href="#"
-                  className="inline-block text-sm md:text-base text-[var(--color-yellow)] font-semibold hover:underline mt-2"
-                >
-                  see project
-                </a>
-              </div>
-            </div>
-
-            {/* Side illustration */}
-            <div className="hidden xl:block w-full xl:w-96 flex-shrink-0">
-              <div className="w-full aspect-square bg-gradient-to-br from-[var(--color-yellow)]/10 to-[var(--color-orange)]/10 rounded-3xl flex items-center justify-center">
-                <div className="text-center p-6">
-                  <div className="text-5xl md:text-6xl mb-4">🎨</div>
-                  <p className="text-base md:text-lg font-semibold text-[var(--color-gray)]">
-                    Illustration
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 md:mt-8 text-left lg:text-right">
-            <p className="text-base md:text-lg">
-              Explore more projects – get a closer look{" "}
-              <a
-                href="#"
-                className="text-[var(--color-yellow)] font-semibold underline"
-              >
-                at the range of work
-              </a>{" "}
-              we've done
-            </p>
-          </div>
         </motion.div>
 
-        {/* Grid of additional projects */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-12 md:mt-16 lg:mt-24"
+        {/* Container with Navigation Buttons Outside */}
+        <div
+          className="relative mx-auto px-16 md:px-20"
+          style={{ maxWidth: "100%" }}
         >
-          {projects.slice(1).map((project, index) => (
-            <div key={index} className="space-y-3 md:space-y-4">
-              <div className="w-full aspect-video bg-gradient-to-br from-blue-200 to-green-200 rounded-2xl flex items-center justify-center">
-                <div className="text-center p-4">
-                  <div className="text-4xl md:text-5xl lg:text-6xl mb-4">
-                    🎨
+          {/* Navigation Arrows - Outside Component */}
+          <button
+            onClick={handlePrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group z-10"
+            aria-label="Previous project"
+          >
+            <svg
+              className="w-6 h-6 text-gray-700 group-hover:text-[var(--color-orange)] transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+
+          <button
+            onClick={handleNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group z-10"
+            aria-label="Next project"
+          >
+            <svg
+              className="w-6 h-6 text-gray-700 group-hover:text-[var(--color-orange)] transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+
+          {/* Slideshow Container */}
+          <div
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden"
+                style={{ minHeight: "500px" }}
+              >
+                {/* Flex Container for Image and Details */}
+                <div className="flex flex-col md:flex-row h-full">
+                  {/* Project Image - Left Side */}
+                  <div className="relative w-full md:w-1/2 min-h-[300px] md:min-h-[500px] bg-gradient-to-br from-gray-100 to-gray-200">
+                    <Image
+                      src={projectsData[currentIndex].image}
+                      alt={projectsData[currentIndex].title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
                   </div>
-                  <p className="text-lg md:text-xl font-semibold text-gray-700">
-                    Project Image
-                  </p>
+
+                  {/* Project Details - Right Side */}
+                  <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4">
+                      {projectsData[currentIndex].title}
+                    </h3>
+                    <p className="text-gray-600 text-lg md:text-xl mb-8">
+                      {projectsData[currentIndex].description}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap gap-4">
+                      <a
+                        href={projectsData[currentIndex].liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-3 bg-[var(--color-orange)] text-white rounded-full font-semibold hover:bg-[var(--color-yellow)] hover:scale-105 hover:shadow-lg transition-all duration-300"
+                      >
+                        Live Demo
+                      </a>
+                      <a
+                        href={projectsData[currentIndex].githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-3 bg-[var(--color-yellow)] text-white rounded-full font-semibold hover:bg-[var(--color-orange)] hover:scale-105 hover:shadow-lg transition-all duration-300"
+                      >
+                        GitHub Code
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl md:text-2xl font-bold">
-                  {project.title}
-                </h3>
-                <p className="text-sm md:text-base text-[var(--color-gray)]">
-                  {project.subtitle}
-                </p>
-                <p className="text-sm md:text-base text-[var(--color-black)] leading-relaxed">
-                  {project.description}
-                </p>
-                <a
-                  href="#"
-                  className="inline-block text-sm md:text-base text-[var(--color-yellow)] font-semibold hover:underline mt-2"
-                >
-                  see project
-                </a>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Navigation Dots */}
+        <div className="flex justify-center gap-3 mt-6">
+          {projectsData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleDotClick(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentIndex
+                  ? "w-12 h-3 bg-[var(--color-orange)]"
+                  : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
+              }`}
+              aria-label={`Go to project ${index + 1}`}
+            />
           ))}
-        </motion.div>
+        </div>
+
+        {/* Project Counter */}
+        <div className="text-center mt-4 text-gray-500 font-light">
+          {currentIndex + 1} / {projectsData.length}
+        </div>
       </div>
     </section>
   );
