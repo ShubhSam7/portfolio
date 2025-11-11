@@ -11,9 +11,9 @@ const playfair = Playfair_Display({
 
 export const Hero = () => {
   return (
-    <div className="pt-20 md:pb-4 md:pt-24 md:pb-8 md:min-h-screen flex flex-col md:flex-row items-center justify-center px-6 md:px-8 gap-2 md:gap-8">
+    <div className="pt-20 md:pb-20 md:pt-24 md:min-h-screen flex flex-col md:flex-row items-center justify-center px-6 md:pl-12 gap-2 md:gap-4">
       <div
-        className={`flex flex-col gap-y-3 md:gap-y-4 font-bold text-[var(--color-black)] ${playfair.className} text-center md:text-left`}
+        className={`flex flex-col gap-y-3 md:gap-y-5 font-bold text-[var(--color-black)] ${playfair.className} text-center md:text-left`}
       >
         <div className="text-3xl md:text-4xl">
           Hi, I am <span className="text-[var(--color-yellow)]">Shubh</span>{" "}
@@ -25,7 +25,7 @@ export const Hero = () => {
           From sleek websites to scalable software — I craft solutions that work
           beautifully.
         </div>
-        <div className="flex gap-x-5">
+        <div className="flex gap-x-5 md:mt-10">
         <div className="hidden md:flex justify-center md:justify-start mt-2 md:mt-0">
           <a
             href="#projects"
