@@ -11,6 +11,32 @@
   --color-black: #000000;
   --color-white: #ffffff;
 
+  /* Dual Theme System */
+  /* Dark Mode - Industrial Precision */
+  --dark-bg: #050505;
+  --dark-surface: #121212;
+  --dark-text-primary: #EDEDED;
+  --dark-text-secondary: #A1A1AA;
+  --dark-accent-indigo: #6366f1;
+  --dark-accent-pink: #ec4899;
+  --dark-grid: rgba(255, 255, 255, 0.05);
+
+  /* Light Mode - Organic Fluidity */
+  --light-bg: #F2F0E9;
+  --light-surface: #FFFFFF;
+  --light-text-primary: #0F172A;
+  --light-text-secondary: #64748B;
+  --light-accent: #2563EB;
+  --light-grid: rgba(0, 0, 0, 0.05);
+
+  /* Legacy colors */
+  --color-deep-void: #050505;
+  --color-rich-charcoal: #0A0A0A;
+  --color-midnight-indigo: #1e1b4b;
+  --color-deep-violet: #312e81;
+  --color-void-black: #171717;
+  --color-neon-blue: #3b82f6;
+
   --background: var(--color-white);
   --foreground: var(--color-black);
 }
@@ -39,4 +65,210 @@ html {
 ::selection {
   background-color: var(--color-orange);
   color: var(--color-white);
+}
+
+/* Noise Texture Overlay */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200vh;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  animation: grain 8s steps(10) infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Breathing Aurora Animations - Slow & Organic */
+@keyframes breathe-blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.2);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(1.1);
+    opacity: 0.3;
+  }
+}
+
+.aurora-blob {
+  animation: breathe-blob 25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform, opacity;
+}
+
+/* Frosted Glass Float Animation - Gentle & Organic */
+@keyframes float-glass {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) translateX(10px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(-8px) translateX(-8px) rotate(-2deg);
+  }
+}
+
+.frosted-glass {
+  animation: float-glass 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+/* Kinetic Text Reveal */
+@keyframes text-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-reveal-container {
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* Gradient Text Effect */
+.gradient-text {
+  background: linear-gradient(to bottom, #ffffff 0%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ultra-Subtle Glass Button */
+.glass-button {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translate(-50%, -50%);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Magnetic Hover Effect */
+@keyframes magnetic-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.magnetic-button:hover {
+  animation: magnetic-pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Isometric Grid Background */
+.grid-background {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* Dot Pattern Background */
+.dot-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* Pulsing Status Dot */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mesh Gradient Orb */
+@keyframes rotate-gradient {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.mesh-orb {
+  animation: rotate-gradient 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+/* Floating UI Snippet */
+@keyframes float-orbit {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+  33% {
+    transform: translate(20px, -30px) rotate(5deg);
+    opacity: 1;
+  }
+  66% {
+    transform: translate(-15px, -15px) rotate(-5deg);
+    opacity: 0.8;
+  }
+}
+
+.orbit-float {
+  animation: float-orbit 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Theme Transition */
+.theme-transition {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -7,7 +7,8 @@
       "Bash(pnpm run dev:*)",
       "Bash(taskkill:*)",
       "Bash(pkill:*)",
-      "Bash(xcopy:*)"
+      "Bash(xcopy:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

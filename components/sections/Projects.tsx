@@ -1,249 +1,313 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Playfair_Display } from "next/font/google";
+import React, { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Github, ArrowUpRight, Layers, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-});
-
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  liveUrl: string;
-  githubUrl: string;
+// --- Utility ---
+function cn(...inputs: string[]) {
+  return inputs.filter(Boolean).join(" ");
 }
 
-const projectsData: Project[] = [
+// --- Data Models ---
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  githubLink: string;
+  liveLink: string;
+  gradient: string;
+  image?: string;
+}
+
+const PROJECTS: Project[] = [
   {
-    title: "Project One",
-    description:
-      "A full-stack web application built with Next.js and TypeScript",
-    image: "/hero-image.png", // Replace with actual project screenshot
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com/username/project-one",
+    id: "1",
+    title: "Nebula Nexus",
+    description: "A decentralized computing platform allowing users to rent out idle GPU power. Built with high-performance WebSockets and a sleek, dark-mode UI.",
+    tags: ["Next.js", "Rust", "WebSockets", "Tailwind"],
+    githubLink: "https://github.com",
+    liveLink: "https://example.com",
+    gradient: "from-indigo-500 via-purple-500 to-blue-500",
+    image: "/hero-image.png",
   },
   {
-    title: "Project Two",
-    description:
-      "Modern e-commerce platform with real-time inventory management",
-    image: "/hero-image.png", // Replace with actual project screenshot
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com/username/project-two",
+    id: "2",
+    title: "Aura UI Kit",
+    description: "An open-source component library focused on glassmorphism and physics-based interactions for React applications.",
+    tags: ["React", "Framer Motion", "Storybook", "npm"],
+    githubLink: "https://github.com",
+    liveLink: "https://example.com",
+    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
+    image: "/hero-image.png",
   },
   {
-    title: "Project Three",
-    description: "Progressive web app for task management and collaboration",
-    image: "/hero-image.png", // Replace with actual project screenshot
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com/username/project-three",
+    id: "3",
+    title: "Recall AI",
+    description: "A 'second brain' application using vector databases to create semantic search across personal notes and documentation.",
+    tags: ["TypeScript", "OpenAI API", "Pinecone", "NextAuth"],
+    githubLink: "https://github.com",
+    liveLink: "https://example.com",
+    gradient: "from-orange-500 via-amber-500 to-red-500",
+    image: "/hero-image.png",
   },
 ];
 
-export const Projects = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+// --- Magnetic Button Component ---
+const MagneticButton = ({
+  children,
+  className,
+  href,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  href: string;
+}) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  // Auto-advance slideshow
-  useEffect(() => {
-    if (isPaused) return;
+  // Spring physics for "liquid" feel
+  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+  const xSpring = useSpring(x, springConfig);
+  const ySpring = useSpring(y, springConfig);
 
-    const interval = setInterval(() => {
-      handleNext();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex, isPaused]);
-
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % projectsData.length);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    x.set((e.clientX - centerX) * 0.3);
+    y.set((e.clientY - centerY) * 0.3);
   };
 
-  const handlePrev = () => {
-    setDirection(-1);
-    setCurrentIndex(
-      (prev) => (prev - 1 + projectsData.length) % projectsData.length
-    );
-  };
-
-  const handleDotClick = (index: number) => {
-    setDirection(index > currentIndex ? 1 : -1);
-    setCurrentIndex(index);
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
   };
 
   return (
-    <section
-      id="projects"
-      className="min-h-screen md:py-8 lg:py-10 bg-white flex items-center"
+    <motion.a
+      ref={ref}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: xSpring, y: ySpring }}
+      className={cn("relative transition-transform", className || "")}
     >
-      <div className="container">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-10"
-        >
-          <h2 className={`text-5xl font-thin ${playfair.className}`}>
-            My Projects
-          </h2>
-        </motion.div>
+      {children}
+    </motion.a>
+  );
+};
 
-        {/* Container with Navigation Buttons Outside */}
-        <div
-          className="relative mx-auto px-16 md:px-20"
-          style={{ maxWidth: "100%" }}
-        >
-          {/* Navigation Arrows - Outside Component */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group z-10"
-            aria-label="Previous project"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700 group-hover:text-[var(--color-orange)] transition-colors"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
+// --- 3D Tilt Project Card ---
+const ProjectCard = ({ project }: { project: Project }) => {
+  const ref = useRef<HTMLDivElement>(null);
 
-          <button
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group z-10"
-            aria-label="Next project"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700 group-hover:text-[var(--color-orange)] transition-colors"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+  // Motion values for tilt rotation
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-          {/* Slideshow Container */}
-          <div
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 },
-                }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden"
-                style={{ minHeight: "500px" }}
-              >
-                {/* Flex Container for Image and Details */}
-                <div className="flex flex-col md:flex-row h-full">
-                  {/* Project Image - Left Side */}
-                  <div className="relative w-full md:w-1/2 min-h-[300px] md:min-h-[500px] bg-gradient-to-br from-gray-100 to-gray-200">
-                    <Image
-                      src={projectsData[currentIndex].image}
-                      alt={projectsData[currentIndex].title}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
+  // Smooth springs for rotation
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), {
+    damping: 20,
+    stiffness: 200,
+  });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-15, 15]), {
+    damping: 20,
+    stiffness: 200,
+  });
 
-                  {/* Project Details - Right Side */}
-                  <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                    <h3 className="text-3xl md:text-4xl font-bold mb-4">
-                      {projectsData[currentIndex].title}
-                    </h3>
-                    <p className="text-gray-600 text-lg md:text-xl mb-8">
-                      {projectsData[currentIndex].description}
-                    </p>
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-4">
-                      <a
-                        href={projectsData[currentIndex].liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-8 py-3 bg-[var(--color-orange)] text-white rounded-full font-semibold hover:bg-[var(--color-yellow)] hover:scale-105 hover:shadow-lg transition-all duration-300"
-                      >
-                        Live Demo
-                      </a>
-                      <a
-                        href={projectsData[currentIndex].githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-8 py-3 bg-[var(--color-yellow)] text-white rounded-full font-semibold hover:bg-[var(--color-orange)] hover:scale-105 hover:shadow-lg transition-all duration-300"
-                      >
-                        GitHub Code
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className="group relative h-full rounded-3xl bg-zinc-900/40 border border-white/10 p-2 backdrop-blur-md transition-colors duration-500 hover:border-white/20 hover:bg-zinc-800/60"
+    >
+      {/* Subtle Glow behind card on hover */}
+      <div
+        className={cn(
+          "absolute inset-0 -z-10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-20 bg-gradient-to-br",
+          project.gradient
+        )}
+      />
+
+      {/* Card Content Container with Depth */}
+      <div
+        style={{ transform: "translateZ(20px)" }}
+        className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-[#0A0A0A]"
+      >
+        {/* Image / Visual */}
+        <div className="relative h-48 overflow-hidden">
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover opacity-80"
+            />
+          ) : (
+            <div
+              className={cn(
+                "absolute inset-0 opacity-80 bg-gradient-to-br",
+                project.gradient
+              )}
+            />
+          )}
+          <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-30 mix-blend-overlay" />
+          {/* Icon overlay */}
+          <div className="absolute bottom-4 left-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10">
+            <Layers className="w-5 h-5 text-white/80" />
           </div>
         </div>
 
-        {/* Navigation Dots */}
-        <div className="flex justify-center gap-3 mt-6">
-          {projectsData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentIndex
-                  ? "w-12 h-3 bg-[var(--color-orange)]"
-                  : "w-3 h-3 bg-gray-300 hover:bg-gray-400"
-              }`}
-              aria-label={`Go to project ${index + 1}`}
-            />
-          ))}
+        {/* Text Content */}
+        <div className="flex-1 p-6 flex flex-col justify-between space-y-6">
+          <div>
+            <h3 className="font-grotesk text-2xl font-bold text-white mb-3 tracking-tight">
+              {project.title}
+            </h3>
+            <p className="font-inter text-zinc-400 leading-relaxed line-clamp-3">
+              {project.description}
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 text-xs font-mono text-zinc-300 bg-white/5 border border-white/10 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Magnetic Action Buttons */}
+            <div className="flex items-center gap-4 pt-2">
+              <MagneticButton
+                href={project.githubLink}
+                className="group/btn relative flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-medium text-sm overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Code{" "}
+                  <Github className="w-4 h-4 transition-transform group-hover/btn:rotate-12" />
+                </span>
+                {/* Hover Fill Effect */}
+                <div className="absolute inset-0 translate-y-[100%] bg-zinc-300 transition-transform duration-300 group-hover/btn:translate-y-0" />
+              </MagneticButton>
+
+              <MagneticButton
+                href={project.liveLink}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 text-white font-medium text-sm hover:bg-white/5 transition-colors"
+              >
+                Live Demo <ArrowUpRight className="w-4 h-4" />
+              </MagneticButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- Main Projects Section ---
+export const Projects = () => {
+  return (
+    <section
+      id="projects"
+      className="relative w-full py-32 bg-[#030303] overflow-hidden"
+    >
+      {/* Fonts */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        .font-grotesk {
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-inter {
+          font-family: 'Inter', sans-serif;
+        }
+      `}</style>
+
+      {/* Background Consistency with Hero */}
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      {/* Vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030303_100%)] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="mb-20 flex flex-col items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-300 mb-4"
+          >
+            <Layers className="w-4 h-4" /> Portfolio
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ delay: 0.2 }}
+            className="font-grotesk text-4xl md:text-5xl font-bold text-white tracking-tighter"
+          >
+            SELECTED{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">
+              WORKS
+            </span>
+          </motion.h2>
         </div>
 
-        {/* Project Counter */}
-        <div className="text-center mt-4 text-gray-500 font-light">
-          {currentIndex + 1} / {projectsData.length}
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+          {PROJECTS.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                delay: index * 0.2,
+                duration: 0.6,
+                ease: "easeOut",
+              }}
+            >
+              <ProjectCard project={project} />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { Header } from "@/components/sections/Header";
+import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
@@ -9,15 +9,13 @@ import { Footer } from "@/components/sections/Footer";
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Header />
-      <main className="space-y-12 md:space-y-16 lg:space-y-20">
+      <Navbar />
+      <main>
         <Hero />
         <About />
         <Projects />
         <Services />
-        after services
         <Contact />
-        after contract
       </main>
       <Footer />
     </div>
