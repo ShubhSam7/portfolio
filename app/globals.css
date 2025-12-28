@@ -1,4 +1,16 @@
+/* Font Imports - Must come before Tailwind */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+
 @import "tailwindcss";
+
+/* Font Utility Classes */
+.font-grotesk {
+  font-family: "Space Grotesk", sans-serif;
+}
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
 
 /* Color Palette */
 :root {
@@ -15,23 +27,23 @@
   /* Dark Mode - Industrial Precision */
   --dark-bg: #050505;
   --dark-surface: #121212;
-  --dark-text-primary: #EDEDED;
-  --dark-text-secondary: #A1A1AA;
+  --dark-text-primary: #ededed;
+  --dark-text-secondary: #a1a1aa;
   --dark-accent-indigo: #6366f1;
   --dark-accent-pink: #ec4899;
   --dark-grid: rgba(255, 255, 255, 0.05);
 
   /* Light Mode - Organic Fluidity */
-  --light-bg: #F2F0E9;
-  --light-surface: #FFFFFF;
-  --light-text-primary: #0F172A;
-  --light-text-secondary: #64748B;
-  --light-accent: #2563EB;
+  --light-bg: #f2f0e9;
+  --light-surface: #ffffff;
+  --light-text-primary: #0f172a;
+  --light-text-secondary: #64748b;
+  --light-accent: #2563eb;
   --light-grid: rgba(0, 0, 0, 0.05);
 
   /* Legacy colors */
   --color-deep-void: #050505;
-  --color-rich-charcoal: #0A0A0A;
+  --color-rich-charcoal: #0a0a0a;
   --color-midnight-indigo: #1e1b4b;
   --color-deep-violet: #312e81;
   --color-void-black: #171717;
@@ -69,16 +81,37 @@ html {
 
 /* Noise Texture Overlay */
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
+  }
 }
 
 .noise-overlay {
@@ -98,7 +131,8 @@ html {
 
 /* Breathing Aurora Animations - Slow & Organic */
 @keyframes breathe-blob {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.4;
   }
@@ -119,7 +153,8 @@ html {
 
 /* Frosted Glass Float Animation - Gentle & Organic */
 @keyframes float-glass {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(0deg);
   }
   33% {
@@ -169,7 +204,7 @@ html {
 }
 
 .glass-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -178,7 +213,8 @@ html {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
   transform: translate(-50%, -50%);
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-button:hover::before {
@@ -188,8 +224,13 @@ html {
 
 /* Magnetic Hover Effect */
 @keyframes magnetic-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .magnetic-button:hover {
@@ -200,27 +241,51 @@ html {
 .grid-background {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+  background-image: linear-gradient(
+      to right,
+      var(--grid-color) 1px,
+      transparent 1px
+    ),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 80% 50% at 50% 50%,
+    black 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 50% at 50% 50%,
+    black 40%,
+    transparent 100%
+  );
 }
 
 /* Dot Pattern Background */
 .dot-pattern {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    var(--grid-color) 1px,
+    transparent 1px
+  );
   background-size: 24px 24px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    black 30%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    black 30%,
+    transparent 100%
+  );
 }
 
 /* Pulsing Status Dot */
 @keyframes pulse-dot {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -236,9 +301,15 @@ html {
 
 /* Mesh Gradient Orb */
 @keyframes rotate-gradient {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.1); }
-  100% { transform: rotate(360deg) scale(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 .mesh-orb {
@@ -248,7 +319,8 @@ html {
 
 /* Floating UI Snippet */
 @keyframes float-orbit {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) rotate(0deg);
     opacity: 0.7;
   }
@@ -269,6 +341,6 @@ html {
 /* Theme Transition */
 .theme-transition {
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

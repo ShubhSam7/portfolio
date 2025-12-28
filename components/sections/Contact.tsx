@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import { Playfair_Display } from "next/font/google";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef } from "react";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -16,6 +16,29 @@ export const Contact = () => {
     contact: "",
     message: "",
   });
+
+  // Magnetic button effect
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+  const xSpring = useSpring(x, springConfig);
+  const ySpring = useSpring(y, springConfig);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current) return;
+    const { left, top, width, height } = buttonRef.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    x.set((e.clientX - centerX) * 0.5);
+    y.set((e.clientY - centerY) * 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -153,9 +176,13 @@ export const Contact = () => {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <button
+                <motion.button
+                  ref={buttonRef}
                   type="submit"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-orange)] text-[var(--color-black)] text-lg font-semibold rounded-full shadow-md hover:shadow-xl hover:scale-105 hover:bg-[var(--color-yellow)] transition-all duration-300"
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                  style={{ x: xSpring, y: ySpring }}
+                  className="relative inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-orange)] text-[var(--color-black)] text-lg font-semibold rounded-full shadow-md hover:shadow-xl hover:scale-105 hover:bg-[var(--color-yellow)] transition-all duration-300"
                 >
                   Send Message
                   <svg
@@ -173,7 +200,7 @@ export const Contact = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </button>
+                </motion.button>
               </motion.div>
             </form>
           </motion.div>

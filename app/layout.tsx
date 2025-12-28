@@ -10,7 +10,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Your Name | Creative Developer",
-  description: "Portfolio showcasing creative development work with modern web technologies",
+  description:
+    "Portfolio showcasing creative development work with modern web technologies",
 };
 
 export default function RootLayout({
@@ -19,15 +20,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module" async></script>
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <script
+          src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+          type="module"
+          async
+        ></script>
       </head>
-      <body
-        className={`${poppins.variable} antialiased overflow-x-hidden`}
-      >
+      <body className={`${poppins.variable} antialiased overflow-x-hidden`}>
         {children}
       </body>
     </html>
