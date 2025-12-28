@@ -180,7 +180,6 @@ const ProjectCard = ({ project }: { project: Project }) => {
               )}
             />
           )}
-          <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-30 mix-blend-overlay" />
           {/* Icon overlay */}
           <div className="absolute bottom-4 left-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10">
             <Layers className="w-5 h-5 text-white/80" />

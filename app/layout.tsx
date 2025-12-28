@@ -9,9 +9,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Your Name | Creative Developer",
+  title: "Shubh | Full-Stack Developer & UI/UX Designer",
   description:
-    "Portfolio showcasing creative development work with modern web technologies",
+    "Award-winning portfolio showcasing cutting-edge web development with Next.js, Three.js, and modern animations. Specializing in immersive digital experiences.",
 };
 
 export default function RootLayout({
