@@ -204,13 +204,13 @@ export const Hero = () => {
             transition={{ delay: 1 }}
             className="pt-8 flex items-center gap-6 text-zinc-600"
           >
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/ShubhSam7" target="_blank" rel="noopener noreferrer">
               <Github className="w-6 h-6 hover:text-white transition-colors cursor-pointer" />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/jainnwin" target="_blank" rel="noopener noreferrer">
               <Twitter className="w-6 h-6 hover:text-white transition-colors cursor-pointer" />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/shubh-samaiya-9a3aa527b/" target="_blank" rel="noopener noreferrer">
               <Linkedin className="w-6 h-6 hover:text-white transition-colors cursor-pointer" />
             </a>
           </motion.div>

@@ -8,19 +8,19 @@ export const ContactInfoCard = () => {
     {
       icon: Mail,
       label: "E-MAIL",
-      value: "hello@shubh.dev",
-      href: "mailto:hello@shubh.dev",
+      value: "shubhsamaiya7@gmail.com",
+      href: "mailto:shubhsamaiya7@gmail.com",
     },
     {
       icon: Phone,
       label: "PHONE",
-      value: "+1 (555) 123-4567",
-      href: "tel:+15551234567",
+      value: "+91 7355669148",
+      href: "tel:+917355669148",
     },
     {
       icon: MapPin,
       label: "ADDRESS",
-      value: "San Francisco, CA",
+      value: "Nagpur, India",
       href: null,
     },
   ];

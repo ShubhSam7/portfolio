@@ -13,10 +13,10 @@ const footerData = {
     { label: "Contact", href: "#contact" },
   ],
   connect: [
-    { label: "GitHub", href: "https://github.com/yourusername", icon: Github },
-    { label: "LinkedIn", href: "https://linkedin.com/in/yourusername", icon: Linkedin },
-    { label: "Twitter", href: "https://twitter.com/yourusername", icon: Twitter },
-    { label: "Email", href: "mailto:hello@shubh.dev", icon: Mail },
+    { label: "GitHub", href: "https://github.com/ShubhSam7", icon: Github },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/shubh-samaiya-9a3aa527b/", icon: Linkedin },
+    { label: "Twitter", href: "https://x.com/jainnwin", icon: Twitter },
+    { label: "Email", href: "mailto:shubhsamaiya7@gmail.com", icon: Mail },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },

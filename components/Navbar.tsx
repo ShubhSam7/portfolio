@@ -14,7 +14,7 @@ export const Navbar = () => {
         <span className="text-sm font-bold tracking-widest text-white/90">SHUBH</span>
         <div className="w-px h-4 bg-white/10" />
         <div className="flex gap-6 text-sm font-medium text-zinc-400">
-          {["Work", "About", "Stack", "Contact"].map((item) => (
+          {["About", "Projects", "Contact"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
