@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Github, ArrowUpRight, Layers, ExternalLink } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import Image from "next/image";
 
 // --- Utility ---
@@ -53,183 +54,207 @@ const PROJECTS: Project[] = [
     gradient: "from-orange-500 via-amber-500 to-red-500",
     image: "/hero-image.png",
   },
+  {
+    id: "4",
+    title: "CloudSync Pro",
+    description: "Enterprise-grade file synchronization system with end-to-end encryption and real-time collaboration features.",
+    tags: ["Node.js", "PostgreSQL", "Redis", "Docker"],
+    githubLink: "https://github.com",
+    liveLink: "https://example.com",
+    gradient: "from-blue-500 via-cyan-500 to-teal-500",
+    image: "/hero-image.png",
+  },
+  {
+    id: "5",
+    title: "MetricFlow",
+    description: "Analytics dashboard with real-time data visualization, custom metrics tracking, and automated reporting capabilities.",
+    tags: ["React", "D3.js", "GraphQL", "Hasura"],
+    githubLink: "https://github.com",
+    liveLink: "https://example.com",
+    gradient: "from-pink-500 via-rose-500 to-red-500",
+    image: "/hero-image.png",
+  },
 ];
 
-// --- Magnetic Button Component ---
-const MagneticButton = ({
-  children,
-  className,
-  href,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  href: string;
-}) => {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+// --- Card Variants ---
+const cardVariants = {
+  active: {
+    scale: 1.08,
+    opacity: 1,
+    filter: "blur(0px)",
+    zIndex: 10,
+    transition: { type: "spring" as const, stiffness: 140, damping: 20 },
+  },
+  adjacent: {
+    scale: 0.9,
+    opacity: 0.4,
+    filter: "blur(12px)",
+    zIndex: 1,
+    pointerEvents: "none" as const,
+    transition: { type: "spring" as const, stiffness: 140, damping: 20 },
+  },
+  hidden: {
+    scale: 0.85,
+    opacity: 0,
+    filter: "blur(14px)",
+    zIndex: 0,
+    pointerEvents: "none" as const,
+    transition: { type: "spring" as const, stiffness: 140, damping: 20 },
+  },
+};
 
-  // Spring physics for "liquid" feel
-  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
-  const xSpring = useSpring(x, springConfig);
-  const ySpring = useSpring(y, springConfig);
+// --- Navigation Button Component ---
+interface NavigationButtonProps {
+  direction: "left" | "right";
+  onClick: () => void;
+  disabled: boolean;
+}
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
-    const centerX = left + width / 2;
-    const centerY = top + height / 2;
-    x.set((e.clientX - centerX) * 0.3);
-    y.set((e.clientY - centerY) * 0.3);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+const NavigationButton = ({ direction, onClick, disabled }: NavigationButtonProps) => {
+  const Icon = direction === "left" ? ChevronLeft : ChevronRight;
 
   return (
-    <motion.a
-      ref={ref}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ x: xSpring, y: ySpring }}
-      className={cn("relative transition-transform", className || "")}
+    <motion.button
+      onClick={onClick}
+      disabled={disabled}
+      whileHover={!disabled ? { scale: 1.1 } : {}}
+      whileTap={!disabled ? { scale: 0.95 } : {}}
+      className={cn(
+        "absolute top-1/2 -translate-y-1/2 z-30",
+        "w-12 h-12 rounded-full",
+        "bg-white/10 backdrop-blur-md border border-white/20",
+        "flex items-center justify-center",
+        "transition-all duration-300",
+        direction === "left" ? "left-4" : "right-4",
+        disabled
+          ? "opacity-40 cursor-not-allowed"
+          : "hover:bg-white/20 cursor-pointer"
+      )}
     >
-      {children}
-    </motion.a>
+      <Icon className="w-6 h-6 text-white" />
+    </motion.button>
   );
 };
 
-// --- 3D Tilt Project Card ---
-const ProjectCard = ({ project }: { project: Project }) => {
-  const ref = useRef<HTMLDivElement>(null);
+// --- Pagination Dots Component ---
+interface PaginationDotsProps {
+  total: number;
+  activeIndex: number;
+  onDotClick: (index: number) => void;
+}
 
-  // Motion values for tilt rotation
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+const PaginationDots = ({ total, activeIndex, onDotClick }: PaginationDotsProps) => {
+  return (
+    <div className="flex justify-center items-center gap-2 mt-8">
+      {Array.from({ length: total }).map((_, index) => (
+        <button
+          key={index}
+          onClick={() => onDotClick(index)}
+          className={cn(
+            "rounded-full transition-all duration-300",
+            "hover:scale-110",
+            index === activeIndex
+              ? "w-2.5 h-2.5 bg-white"
+              : "w-2 h-2 bg-white/30 hover:bg-white/50"
+          )}
+          aria-label={`Go to project ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
+};
 
-  // Smooth springs for rotation
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), {
-    damping: 20,
-    stiffness: 200,
-  });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-15, 15]), {
-    damping: 20,
-    stiffness: 200,
-  });
+// --- Carousel Card Component ---
+interface CarouselCardProps {
+  project: Project;
+  position: "active" | "adjacent" | "hidden";
+}
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / width - 0.5);
-    y.set(mouseY / height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
+const CarouselCard = ({ project, position }: CarouselCardProps) => {
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      className="group relative h-full rounded-3xl bg-zinc-900/40 border border-white/10 p-2 backdrop-blur-md transition-colors duration-500 hover:border-white/20 hover:bg-zinc-800/60"
+      variants={cardVariants}
+      animate={position}
+      className="w-[450px] min-w-[450px]"
     >
-      {/* Subtle Glow behind card on hover */}
-      <div
-        className={cn(
-          "absolute inset-0 -z-10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-20 bg-gradient-to-br",
-          project.gradient
-        )}
-      />
-
-      {/* Card Content Container with Depth */}
-      <div
-        style={{ transform: "translateZ(20px)" }}
-        className="relative h-full flex flex-col rounded-2xl overflow-hidden bg-[#0A0A0A]"
-      >
-        {/* Image / Visual */}
-        <div className="relative h-48 overflow-hidden">
-          {project.image ? (
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className="object-cover opacity-80"
-            />
-          ) : (
-            <div
-              className={cn(
-                "absolute inset-0 opacity-80 bg-gradient-to-br",
-                project.gradient
-              )}
-            />
+      <div className="relative h-full group">
+        {/* Soft Glow */}
+        <div
+          className={cn(
+            "absolute -inset-4 opacity-0 blur-3xl transition-opacity duration-700 bg-gradient-to-br",
+            position === "active" ? "group-hover:opacity-40" : "",
+            project.gradient
           )}
-          {/* Icon overlay */}
-          <div className="absolute bottom-4 left-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10">
-            <Layers className="w-5 h-5 text-white/80" />
-          </div>
-        </div>
+          style={{ zIndex: -1 }}
+        />
 
-        {/* Text Content */}
-        <div className="flex-1 p-6 flex flex-col justify-between space-y-6">
-          <div>
-            <h3 className="font-grotesk text-2xl font-bold text-white mb-3 tracking-tight">
+        {/* Glass Card */}
+        <div className="relative h-[600px] rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl">
+          {/* Thumbnail */}
+          <div className="relative h-64 overflow-hidden">
+            {project.image ? (
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className="object-cover opacity-90"
+              />
+            ) : (
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-br opacity-80",
+                  project.gradient
+                )}
+              />
+            )}
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          </div>
+
+          {/* Content */}
+          <div className="p-8 space-y-6">
+            {/* Title */}
+            <h3 className="font-grotesk text-3xl font-bold text-white tracking-tight">
               {project.title}
             </h3>
+
+            {/* Description */}
             <p className="font-inter text-zinc-400 leading-relaxed line-clamp-3">
               {project.description}
             </p>
-          </div>
 
-          <div className="space-y-6">
-            {/* Tags */}
+            {/* Tech Stack Pills */}
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 text-xs font-mono text-zinc-300 bg-white/5 border border-white/10 rounded-full"
+                  className="px-3 py-1.5 text-xs font-mono text-zinc-300 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm"
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            {/* Magnetic Action Buttons */}
-            <div className="flex items-center gap-4 pt-2">
-              <MagneticButton
+            {/* Actions */}
+            <div className="flex items-center gap-3 pt-4">
+              <a
                 href={project.githubLink}
-                className="group/btn relative flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-medium text-sm overflow-hidden"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-zinc-200 transition-colors"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  Code{" "}
-                  <Github className="w-4 h-4 transition-transform group-hover/btn:rotate-12" />
-                </span>
-                {/* Hover Fill Effect */}
-                <div className="absolute inset-0 translate-y-[100%] bg-zinc-300 transition-transform duration-300 group-hover/btn:translate-y-0" />
-              </MagneticButton>
-
-              <MagneticButton
+                <FaGithub className="w-4 h-4" />
+                Code
+              </a>
+              <a
                 href={project.liveLink}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 text-white font-medium text-sm hover:bg-white/5 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/10 text-zinc-300 font-semibold text-sm hover:bg-white/5 transition-colors"
               >
-                Live Demo <ArrowUpRight className="w-4 h-4" />
-              </MagneticButton>
+                <ExternalLink className="w-4 h-4" />
+                Live Demo
+              </a>
             </div>
           </div>
         </div>
@@ -240,6 +265,93 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
 // --- Main Projects Section ---
 export const Projects = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Get card state based on position
+  const getCardState = (index: number): "active" | "adjacent" | "hidden" => {
+    const position = index - activeIndex;
+    if (position === 0) return "active";
+    if (Math.abs(position) === 1) return "adjacent";
+    return "hidden";
+  };
+
+  // Navigation functions
+  const goToNext = useCallback(() => {
+    setActiveIndex((prev) => Math.min(prev + 1, PROJECTS.length - 1));
+    handleUserInteraction();
+  }, []);
+
+  const goToPrevious = useCallback(() => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+    handleUserInteraction();
+  }, []);
+
+  const goToIndex = useCallback((index: number) => {
+    setActiveIndex(index);
+    handleUserInteraction();
+  }, []);
+
+  // Handle user interaction - pause and schedule resume
+  const handleUserInteraction = () => {
+    setIsPaused(true);
+
+    // Clear existing resume timeout
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+
+    // Resume after 5 seconds of inactivity
+    resumeTimeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 5000);
+  };
+
+  // Auto-play effect
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => {
+        // Loop back to start when reaching end
+        return prev === PROJECTS.length - 1 ? 0 : prev + 1;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goToNext();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [goToNext, goToPrevious]);
+
+  // Cleanup resume timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Calculate track offset
+  const cardWidth = 450;
+  const gap = 32;
+  const trackOffset = -(activeIndex * (cardWidth + gap));
+
   return (
     <section
       id="projects"
@@ -264,9 +376,12 @@ export const Projects = () => {
       {/* Vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030303_100%)] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      {/* Radial Glow Behind Center Card */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/20 blur-[150px] opacity-30 pointer-events-none" />
+
+      <div className="relative z-10">
         {/* Section Header */}
-        <div className="mb-20 flex flex-col items-start">
+        <div className="max-w-7xl mx-auto px-6 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -279,7 +394,7 @@ export const Projects = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="font-grotesk text-4xl md:text-5xl font-bold text-white tracking-tighter"
           >
@@ -288,25 +403,80 @@ export const Projects = () => {
               WORKS
             </span>
           </motion.h2>
+
+          {/* Hint Text */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-4 text-sm text-zinc-500 font-inter"
+          >
+            Swipe, use navigation buttons, or arrow keys to explore
+          </motion.p>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {PROJECTS.map((project, index) => (
+        {/* Carousel Container */}
+        <div className="relative">
+          {/* Navigation Buttons */}
+          <NavigationButton
+            direction="left"
+            onClick={goToPrevious}
+            disabled={activeIndex === 0}
+          />
+          <NavigationButton
+            direction="right"
+            onClick={goToNext}
+            disabled={activeIndex === PROJECTS.length - 1}
+          />
+
+          {/* Edge Fade Gradients */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#030303] to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#030303] to-transparent z-20 pointer-events-none" />
+
+          {/* Viewport Container */}
+          <div
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Draggable Track */}
             <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                delay: index * 0.2,
-                duration: 0.6,
-                ease: "easeOut",
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset }) => {
+                const swipeThreshold = 50;
+                if (offset.x > swipeThreshold && activeIndex > 0) {
+                  goToPrevious();
+                } else if (offset.x < -swipeThreshold && activeIndex < PROJECTS.length - 1) {
+                  goToNext();
+                }
+              }}
+              animate={{ x: trackOffset }}
+              transition={{ type: "spring", stiffness: 140, damping: 22 }}
+              className="flex gap-8 cursor-grab active:cursor-grabbing"
+              style={{
+                paddingLeft: "calc(50vw - 225px)", // Center first card
+                paddingRight: "calc(50vw - 225px)", // Center last card
               }}
             >
-              <ProjectCard project={project} />
+              {PROJECTS.map((project, index) => (
+                <CarouselCard
+                  key={project.id}
+                  project={project}
+                  position={getCardState(index)}
+                />
+              ))}
             </motion.div>
-          ))}
+          </div>
+
+          {/* Pagination Dots */}
+          <PaginationDots
+            total={PROJECTS.length}
+            activeIndex={activeIndex}
+            onDotClick={goToIndex}
+          />
         </div>
       </div>
     </section>
