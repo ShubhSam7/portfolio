@@ -60,48 +60,33 @@ const CodeCard = () => {
         <div className="p-6 font-mono text-xs sm:text-sm leading-relaxed text-zinc-400">
           <div className="flex">
             <span className="text-zinc-600 select-none w-6">1</span>
-            <span className="text-purple-400">const</span>{' '}
-            <span className="text-blue-400">DigitalExperience</span>{' '}
-            <span className="text-zinc-300">=</span>{' '}
-            <span className="text-zinc-300">()</span>{' '}
-            <span className="text-purple-400">{'=>'}</span>{' '}
-            <span className="text-zinc-300">{'{'}</span>
+            <span className="text-zinc-300">{'<'}</span>
+            <span className="text-pink-400">Product</span>
           </div>
           <div className="flex">
             <span className="text-zinc-600 select-none w-6">2</span>
-            <span className="pl-4 text-purple-400">return</span>{' '}
-            <span className="text-zinc-300">(</span>
-          </div>
-          <div className="flex">
-            <span className="text-zinc-600 select-none w-6">3</span>
-            <span className="pl-8 text-zinc-300">{'<'}</span>
-            <span className="text-pink-400">Innovation</span>
-          </div>
-          <div className="flex">
-            <span className="text-zinc-600 select-none w-6">4</span>
-            <span className="pl-12 text-blue-300">precision</span>
-            <span className="text-zinc-300">={'{'}</span>
-            <span className="text-orange-400">true</span>
-            <span className="text-zinc-300">{'}'}</span>
-          </div>
-          <div className="flex">
-            <span className="text-zinc-600 select-none w-6">5</span>
-            <span className="pl-12 text-blue-300">aesthetics</span>
+            <span className="pl-4 text-blue-300">architecture</span>
             <span className="text-zinc-300">="</span>
-            <span className="text-green-400">liquid-glass</span>
+            <span className="text-green-400">scalable</span>
             <span className="text-zinc-300">"</span>
           </div>
           <div className="flex">
-            <span className="text-zinc-600 select-none w-6">6</span>
-            <span className="pl-8 text-zinc-300">{'/>'}</span>
+            <span className="text-zinc-600 select-none w-6">3</span>
+            <span className="pl-4 text-blue-300">realtime</span>
+            <span className="text-zinc-300">="</span>
+            <span className="text-green-400">websockets</span>
+            <span className="text-zinc-300">"</span>
           </div>
           <div className="flex">
-            <span className="text-zinc-600 select-none w-6">7</span>
-            <span className="text-zinc-300">)</span>
+            <span className="text-zinc-600 select-none w-6">4</span>
+            <span className="pl-4 text-blue-300">intelligence</span>
+            <span className="text-zinc-300">="</span>
+            <span className="text-green-400">ml</span>
+            <span className="text-zinc-300">"</span>
           </div>
           <div className="flex">
-            <span className="text-zinc-600 select-none w-6">8</span>
-            <span className="text-zinc-300">{'}'}</span>
+            <span className="text-zinc-600 select-none w-6">5</span>
+            <span className="text-zinc-300">{'/>'}</span>
             <span className="inline-block w-2 h-4 ml-1 bg-indigo-500 animate-pulse" />
           </div>
         </div>
@@ -157,7 +142,7 @@ export const Hero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            Available for new projects
+            Building & shipping real systems
           </motion.div>
 
           {/* Main Heading */}
@@ -168,15 +153,15 @@ export const Hero = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter text-white"
             >
-              CRAFTING
+              ENGINEERING
             </motion.h1>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 via-indigo-200 to-zinc-400"
+              className="text-5xl sm:text-7xl lg:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 via-indigo-200 to-zinc-400"
             >
-              DIGITAL FLOW
+              DIGITAL SYSTEMS
             </motion.h1>
           </div>
 
@@ -187,7 +172,7 @@ export const Hero = () => {
             transition={{ delay: 0.6 }}
             className="font-inter text-zinc-400 text-lg max-w-lg leading-relaxed"
           >
-            I build pixel-perfect, scalable infrastructure for the web — transforming complex systems into <span className="text-zinc-200 font-medium">elegant experiences</span>.
+            I design and build scalable web systems — from real-time platforms to ML-powered applications — with a focus on <span className="text-zinc-200 font-medium">performance, clarity, and correctness</span>.
           </motion.p>
 
           {/* Action Buttons */}
@@ -201,14 +186,14 @@ export const Hero = () => {
               href="#projects"
               className="group relative px-8 py-3 rounded-full bg-white text-black font-semibold hover:bg-zinc-200 transition-all flex items-center gap-2"
             >
-              See My Work
+              View Selected Work
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a
               href="#contact"
               className="px-8 py-3 rounded-full border border-white/10 text-zinc-300 hover:bg-white/5 transition-all"
             >
-              Contact Me
+              Get in Touch
             </a>
           </motion.div>
 
