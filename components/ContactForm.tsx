@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useState, FormEvent, useRef } from "react";
-import { Send } from "lucide-react";
+import { useState, FormEvent, useRef, useEffect } from "react";
+import { Send, Loader2, CheckCircle2, XCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 export const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,17 @@ export const ContactForm = () => {
     message: "",
     terms: false,
   });
+
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Initialize EmailJS
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    if (publicKey) {
+      emailjs.init(publicKey);
+    }
+  }, []);
 
   // Magnetic button effect
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -37,10 +49,67 @@ export const ContactForm = () => {
     y.set(0);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission logic here
+
+    // Validate all fields are filled
+    if (!formData.name || !formData.email || !formData.subject || !formData.message || !formData.terms) {
+      setStatus("error");
+      setErrorMessage("Please fill in all fields and accept the terms.");
+      setTimeout(() => setStatus("idle"), 3000);
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      // EmailJS configuration
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+
+      // Check if EmailJS is configured
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("EmailJS is not configured. Please add your API keys to .env.local");
+      }
+
+      // Send email using EmailJS
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          reply_to: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }
+      );
+
+      // Success!
+      setStatus("success");
+
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          terms: false,
+        });
+        setStatus("idle");
+      }, 3000);
+
+    } catch (error: any) {
+      console.error("Email send error:", error);
+      setStatus("error");
+
+      // Handle different error structures
+      const errorMsg = error?.text || error?.message || "Failed to send message. Please try again.";
+      setErrorMessage(errorMsg);
+
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   const handleChange = (
@@ -67,6 +136,43 @@ export const ContactForm = () => {
         {/* Grid Background Overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808006_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:24px_24px] opacity-40" />
 
+        {/* Status Notification */}
+        {status !== "idle" && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`absolute top-4 right-4 left-4 z-20 p-4 rounded-xl backdrop-blur-md border ${
+              status === "success"
+                ? "bg-green-500/10 border-green-500/30"
+                : status === "error"
+                ? "bg-red-500/10 border-red-500/30"
+                : "bg-blue-500/10 border-blue-500/30"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              {status === "loading" && (
+                <>
+                  <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                  <span className="text-sm text-blue-300">Sending your message...</span>
+                </>
+              )}
+              {status === "success" && (
+                <>
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <span className="text-sm text-green-300">Message sent successfully!</span>
+                </>
+              )}
+              {status === "error" && (
+                <>
+                  <XCircle className="w-5 h-5 text-red-400" />
+                  <span className="text-sm text-red-300">{errorMessage}</span>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+
         {/* Content */}
         <div className="relative z-10">
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -92,7 +198,8 @@ export const ContactForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="John Doe"
                 />
               </motion.div>
@@ -117,7 +224,8 @@ export const ContactForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="john@example.com"
                 />
               </motion.div>
@@ -143,7 +251,8 @@ export const ContactForm = () => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+                disabled={status === "loading"}
+                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Project Inquiry"
               />
             </motion.div>
@@ -167,8 +276,9 @@ export const ContactForm = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
+                disabled={status === "loading"}
                 rows={5}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 resize-none"
+                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Tell me about your project..."
               />
             </motion.div>
@@ -188,7 +298,8 @@ export const ContactForm = () => {
                 checked={formData.terms}
                 onChange={handleChange}
                 required
-                className="mt-1 w-4 h-4 rounded bg-black/50 border border-white/10 text-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:ring-offset-0 transition-all duration-300 cursor-pointer"
+                disabled={status === "loading"}
+                className="mt-1 w-4 h-4 rounded bg-black/50 border border-white/10 text-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:ring-offset-0 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <label
                 htmlFor="terms"
@@ -215,17 +326,27 @@ export const ContactForm = () => {
               <motion.button
                 ref={buttonRef}
                 type="submit"
+                disabled={status === "loading"}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 style={{ x: xSpring, y: ySpring }}
-                className="relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 overflow-hidden group"
+                className="relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {/* Animated gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <span className="relative z-10 flex items-center gap-2">
-                  Send Message
-                  <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  {status === "loading" ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </>
+                  )}
                 </span>
               </motion.button>
             </motion.div>
