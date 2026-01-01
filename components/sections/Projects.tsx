@@ -26,53 +26,30 @@ interface Project {
 const PROJECTS: Project[] = [
   {
     id: "1",
-    title: "Nebula Nexus",
-    description: "A decentralized computing platform allowing users to rent out idle GPU power. Built with high-performance WebSockets and a sleek, dark-mode UI.",
-    tags: ["Next.js", "Rust", "WebSockets", "Tailwind"],
-    githubLink: "https://github.com",
-    liveLink: "https://example.com",
+    title: "Cipher",
+    description: "An anonymous social media and information-sharing platform built exclusively for IIIT Nagpur students. Cipher enables secure, identity-free discussions, campus-wide announcements, and real-time interactions while maintaining privacy and moderation controls.",
+    tags: ["Next.js", "TypeScript", "Node.js", "Prisma", "PostgreSQL", "Vercel"],
+    githubLink: "https://github.com/ShubhSam7/cipher",
+    liveLink: "https://cipher.shubh.works",
     gradient: "from-indigo-500 via-purple-500 to-blue-500",
-    image: "/hero-image.png",
   },
   {
     id: "2",
-    title: "Aura UI Kit",
-    description: "An open-source component library focused on glassmorphism and physics-based interactions for React applications.",
-    tags: ["React", "Framer Motion", "Storybook", "npm"],
-    githubLink: "https://github.com",
-    liveLink: "https://example.com",
-    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-    image: "/hero-image.png",
+    title: "Second-Brain",
+    description: "An AI-powered second brain application that allows users to save links, notes, and resources in one place. The system automatically generates semantic embeddings, enabling intelligent search, contextual recall, and AI-generated summaries across personal knowledge.",
+    tags: ["TypeScript", "Llama API", "Pinecone", "Vector DB", "NextAuth", "Next.js"],
+    githubLink: "https://github.com/ShubhSam7/second-brain",
+    liveLink: "https://second-brain.shubh.works/",
+    gradient: "from-purple-500 via-pink-500 to-indigo-500",
   },
   {
     id: "3",
-    title: "Recall AI",
-    description: "A 'second brain' application using vector databases to create semantic search across personal notes and documentation.",
-    tags: ["TypeScript", "OpenAI API", "Pinecone", "NextAuth"],
-    githubLink: "https://github.com",
-    liveLink: "https://example.com",
-    gradient: "from-orange-500 via-amber-500 to-red-500",
-    image: "/hero-image.png",
-  },
-  {
-    id: "4",
-    title: "CloudSync Pro",
-    description: "Enterprise-grade file synchronization system with end-to-end encryption and real-time collaboration features.",
-    tags: ["Node.js", "PostgreSQL", "Redis", "Docker"],
-    githubLink: "https://github.com",
-    liveLink: "https://example.com",
-    gradient: "from-blue-500 via-cyan-500 to-teal-500",
-    image: "/hero-image.png",
-  },
-  {
-    id: "5",
-    title: "MetricFlow",
-    description: "Analytics dashboard with real-time data visualization, custom metrics tracking, and automated reporting capabilities.",
-    tags: ["React", "D3.js", "GraphQL", "Hasura"],
-    githubLink: "https://github.com",
-    liveLink: "https://example.com",
-    gradient: "from-pink-500 via-rose-500 to-red-500",
-    image: "/hero-image.png",
+    title: "Visitor Management System",
+    description: "A centralized visitor management system designed for the IIIT Nagpur campus. The platform captures visitor photos, logs entry details, prioritizes sensitive requests, and streamlines meeting approvals with professors through a secure and structured workflow.",
+    tags: ["React", "TypeScript", "Node.js", "Supabase", "QR Code", "Email Automation"],
+    githubLink: "https://github.com/omPatil3690/DBMS_Project-VMS",
+    liveLink: "",
+    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
   },
 ];
 
@@ -188,10 +165,10 @@ const CarouselCard = ({ project, position }: CarouselCardProps) => {
           style={{ zIndex: -1 }}
         />
 
-        {/* Glass Card */}
-        <div className="relative h-[600px] rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl">
-          {/* Thumbnail */}
-          <div className="relative h-64 overflow-hidden">
+        {/* Glass Card - CHANGED: h-[600px] to h-[650px] */}
+        <div className="relative h-[650px] rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl flex flex-col">
+          {/* Thumbnail - CHANGED: h-64 to h-60 to give text more room */}
+          <div className="relative h-60 min-h-[15rem] overflow-hidden flex-shrink-0">
             {project.image ? (
               <Image
                 src={project.image}
@@ -211,8 +188,8 @@ const CarouselCard = ({ project, position }: CarouselCardProps) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           </div>
 
-          {/* Content */}
-          <div className="p-8 space-y-6">
+          {/* Content - CHANGED: p-8/space-y-6 to p-6/space-y-4 */}
+          <div className="p-6 space-y-4 flex flex-col h-full">
             {/* Title */}
             <h3 className="font-grotesk text-3xl font-bold text-white tracking-tight">
               {project.title}
@@ -235,8 +212,11 @@ const CarouselCard = ({ project, position }: CarouselCardProps) => {
               ))}
             </div>
 
+            {/* Spacer to push buttons to bottom if content is short */}
+            <div className="flex-grow" />
+
             {/* Actions */}
-            <div className="flex items-center gap-3 pt-4">
+            <div className="flex items-center gap-3 pt-2">
               <a
                 href={project.githubLink}
                 target="_blank"
@@ -246,15 +226,25 @@ const CarouselCard = ({ project, position }: CarouselCardProps) => {
                 <FaGithub className="w-4 h-4" />
                 Code
               </a>
-              <a
-                href={project.liveLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/10 text-zinc-300 font-semibold text-sm hover:bg-white/5 transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Live Demo
-              </a>
+              {project.liveLink ? (
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/10 text-zinc-300 font-semibold text-sm hover:bg-white/5 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Live Demo
+                </a>
+              ) : (
+                <div
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-white/5 text-zinc-600 font-semibold text-sm cursor-not-allowed opacity-50"
+                  title="No live demo available"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  No Live Demo
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -436,7 +426,7 @@ export const Projects = () => {
 
           {/* Viewport Container */}
           <div
-            className="relative overflow-hidden"
+            className="relative overflow-hidden h-[700px]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -455,7 +445,7 @@ export const Projects = () => {
               }}
               animate={{ x: trackOffset }}
               transition={{ type: "spring", stiffness: 140, damping: 22 }}
-              className="flex gap-8 cursor-grab active:cursor-grabbing"
+              className="flex gap-8 cursor-grab active:cursor-grabbing items-center h-full"
               style={{
                 paddingLeft: "calc(50vw - 225px)", // Center first card
                 paddingRight: "calc(50vw - 225px)", // Center last card
