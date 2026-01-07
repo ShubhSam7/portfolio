@@ -191,7 +191,7 @@ export const About = () => {
 
             <div className="pt-4">
               <MagneticButton
-                href="/resume.pdf"
+                href="public\Shubh_Resume.pdf"
                 download
                 className="group/btn inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white text-black font-semibold text-sm overflow-hidden"
               >
