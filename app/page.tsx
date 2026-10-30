@@ -1,21 +1,5 @@
-import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Projects } from "@/components/sections/Projects";
-import { ContactSection } from "@/components/ContactSection";
-import { Footer } from "@/components/sections/Footer";
+import { Portfolio } from "@/components/Portfolio";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Projects />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <Portfolio />;
 }

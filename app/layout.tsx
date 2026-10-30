@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
 export const metadata: Metadata = {
-  title: "Shubh | Full-Stack Developer & UI/UX Designer",
+  title: "Shubh Samaiya — Software Engineer",
   description:
-    "Award-winning portfolio showcasing cutting-edge web development with Next.js, Three.js, and modern animations. Specializing in immersive digital experiences.",
+    "Hey, I’m Shubh. I get curious, build things, and keep tweaking them. A little about me, my side projects, and what I’m learning at Habuild.",
 };
 
 export default function RootLayout({
@@ -20,21 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <script
-          src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
-          type="module"
-          async
-        ></script>
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||'dark'}catch(e){}})()` }} />
       </head>
-      <body className={`${poppins.variable} antialiased overflow-x-hidden`}>
+      <body>
         {children}
       </body>
     </html>

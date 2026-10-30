@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Portfolio game
+
+Use **Play a quick game** in the hero to open rock, paper, scissors. The first to three points wins; draws do not award points. Choose a hand by clicking, tapping, or pressing **R**, **P**, or **S**. **Esc** closes the game and preserves completed rounds. **Start over** resets the match. Motion follows the visitor's reduced-motion preference.
+
+Run the rules and match-state checks with `npm run test:game`. The game runs entirely in the browser without an external service.
+
 ## Getting Started
 
 First, run the development server:
